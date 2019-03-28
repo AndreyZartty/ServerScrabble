@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <strings.h>
 #include <unistd.h>
+#include <cstring>
 
 #define PORT 3550
 #define BACKLOG 4
@@ -65,10 +66,11 @@ int main(int argc, char *argv[])
             exit(-1);
         }
 
-        printf("Se obtuvo una conexión desde");
+        printf("Se obtuvo una conexión de un cliente.\n");
 
+        char msg[] = "Bienvenido a mi servidor Scrabble!\n";
 
-        send(fd2,"Bienvenido a mi servidor Scrabble.\n",22,0);
+        send(fd2,msg,strlen(msg),0);
 
 
         close(fd2);
