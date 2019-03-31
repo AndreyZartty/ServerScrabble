@@ -52,3 +52,5 @@ cmake-build-debug/Project\.cbp
 cmake-build-debug/ServerScrabble\.cbp
 
 cmake-build-debug/server\.cpp
+
+cmake-build-debug/

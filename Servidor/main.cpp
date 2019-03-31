@@ -12,8 +12,9 @@
 
 #define PORT 3550
 #define BACKLOG 4
+#define MAXDATASIZE 1000
 
-int main(int argc, char *argv[])
+int main()
 {
 
     int fd, fd2;
@@ -40,9 +41,6 @@ int main(int argc, char *argv[])
 
     bzero(&(server.sin_zero),8);
 
-
-
-
     if(bind(fd,(struct sockaddr*)&server,
             sizeof(struct sockaddr))==-1) {
         printf("error en bind() \n");
@@ -68,11 +66,27 @@ int main(int argc, char *argv[])
 
         printf("Se obtuvo una conexión de un cliente.\n");
 
-        char msg[] = "Bienvenido a mi servidor Scrabble!\n";
+        ssize_t r;
 
-        send(fd2,msg,strlen(msg),0);
+        char buff[MAXDATASIZE];
 
+        for (;;)
+        {
+            r = read(fd2, buff, MAXDATASIZE);
+
+            if (r == -1)
+            {
+                perror("read");
+                return EXIT_FAILURE;
+            }
+            if (r == 0)
+                break;
+
+            printf("READ: %s\n", buff);
+        }
 
         close(fd2);
+
+        //return EXIT_SUCCESS;
     }
 }
