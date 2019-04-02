@@ -83,6 +83,7 @@ int main()
                 break;
 
             printf("READ: %s\n", buff);
+            memset(buff, 0, MAXDATASIZE);
         }
 
         close(fd2);
