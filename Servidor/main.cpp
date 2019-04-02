@@ -9,6 +9,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include <cstring>
+#include <json-c/json.h>
 
 #define PORT 3550
 #define BACKLOG 4
@@ -81,8 +82,11 @@ int main()
             }
             if (r == 0)
                 break;
-
             printf("READ: %s\n", buff);
+            struct json_object *codigo;
+            json_object *parsed_json = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_json,"Codigo",&codigo);
+            printf("Codigo: %s\n", json_object_get_string(codigo));
             memset(buff, 0, MAXDATASIZE);
         }
 
