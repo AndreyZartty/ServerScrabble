@@ -3,7 +3,7 @@ project(ServerScrabble)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Server Servidor/main.cpp)
+add_executable(Server Servidor/main.cpp Servidor/Node.cpp Servidor/Node.h Servidor/Cuadricula.cpp Servidor/Cuadricula.h)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(JSON-C json-c)
