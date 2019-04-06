@@ -29,10 +29,12 @@
 using namespace std;
 
 
+///Variable estática: cantidad máxima de Juegos
+static int cantMaximaJuegos = 4;
 ///Variable estática: cantidad de Juegos activos en el servidor
 static int cantJuegosActuales = 0;
 ///Variable estática: Array con los juegos activos (Cantidad máxima de juegos será predefinida)
-static Juego* juegosActuales[5];
+static Juego* juegosActuales[10];
 
 
 
@@ -42,14 +44,16 @@ static Juego* juegosActuales[5];
  * @returns numero del juego (utilizado para saber que juego iniciar)
  */
 int juegoNuevo(int cantJugadores) {
-    if (cantJuegosActuales < 10 ) {
+    if (cantJuegosActuales < cantMaximaJuegos ) {
         ///Instancia el objeto Juego
         Juego* nJuego = new Juego(cantJugadores);
         ///Lo agrega en la siguiente posicion sin juego guardado
         juegosActuales[cantJuegosActuales] = nJuego;
         ///Manda a generar el codigo del juego
         // (PRUEBAS: Esta utilizando la cantidad de Juegos Actuales para generar un codigo mientras)
-        juegosActuales[cantJuegosActuales]->generarCodigo(cantJuegosActuales+1);
+        //juegosActuales[cantJuegosActuales]->generarCodigo(cantJuegosActuales+1);
+
+        juegosActuales[cantJuegosActuales]->generarCodigo();
         ///Actualiza la cantidad de juegos actuales con el recien creado
         cantJuegosActuales++;
 
@@ -63,6 +67,7 @@ int juegoNuevo(int cantJugadores) {
 
         return -1;
     }
+
 }
 
 
@@ -86,39 +91,7 @@ int getJuego(string codigo){
 }
 
 
-/**
- * Agrega un jugador nuevo al juego que se indica.
- * @param codigo
- * @param nombreJugador
- */
-void jugadorNuevo(string codigo, string nombreJugador) {
 
-    int numJuego = getJuego(codigo);
-
-    if (numJuego >= 0) {
-
-        ///Guarda el juego que se modificará en una variable
-        Juego* juegoActual = juegosActuales[numJuego];
-
-        ///Ingresa al nuevo jugador
-        juegoActual->addJugador(nombreJugador);
-
-
-        //*************************************Pruebas*********************************************************
-
-        //Cantidad de jugadores
-        cout << "\nCantidad de Jugadores Actuales en Juego(" << juegoActual->getCodigo()
-             << ") : " << juegoActual->getCantJugadoresActuales() << "\n" << endl;
-
-        //*****************************************************************************************************
-
-    }
-    ///Cuando no hay juegos definidos
-    else {
-        cout << "No se puede ingresar el juego, si este no está definido." << endl;
-    }
-
-}
 
 /**
  * Funcion inicial del juego.
@@ -126,11 +99,11 @@ void jugadorNuevo(string codigo, string nombreJugador) {
  * @param cantJugadoresPermitidos - cantidad de jugadores maximos en el juego
  * @param nombreJugador - string del nombre del jugador
  */
-void iniciarScrabble(string cantJugadoresPermitidos, string nombreJugador) {
+string iniciarScrabble(string cantJugadoresPermitidos, string nombreJugador) {
     //Crea un nuevo juego y retorna que numero de juego es
     int numJuego = juegoNuevo(stoi(cantJugadoresPermitidos));
 
-    if (numJuego >= 0) {
+    if (numJuego >= 0 && numJuego <= cantMaximaJuegos) {
         ///Guarda el juego actual, recien creado, en una variable
         Juego* juegoActual = juegosActuales[numJuego];
 
@@ -153,11 +126,46 @@ void iniciarScrabble(string cantJugadoresPermitidos, string nombreJugador) {
 
         //*****************************************************************************************************
 
+
+
+        json_object *jobjSendCodigo = json_object_new_object();
+
+
+        json_object *jstringCodigo = json_object_new_string(juegoActual->getCodigo().c_str());
+
+
+        json_object_object_add(jobjSendCodigo,"CODIGO", jstringCodigo);
+
+
+        return json_object_to_json_string(jobjSendCodigo);
+
+
+
+
     }
     ///Cuando ya no se pueden crear mas juegos
     else {
         cout << "\nPor favor intente ingresar luego." << endl;
         ///Servidor deberia devolver un mensaje en pantalla diciendo que espere a que termine un juego
+
+
+        json_object *jobjSendErrorCodigo = json_object_new_object();
+
+
+        json_object *jstringErrorCodigo = json_object_new_string("Máxima cantidad de juegos activos alcanzada."
+                                          "\nPor favor intente ingresar luego.");
+
+
+        json_object_object_add(jobjSendErrorCodigo,"ERRORCODIGO", jstringErrorCodigo);
+
+
+        cout << "Máxima cantidad de juegos activos alcanzada.\nPor favor intente ingresar luego." << endl;
+
+
+        return json_object_to_json_string(jobjSendErrorCodigo);
+
+
+        //return ;
     }
 
 }
@@ -206,7 +214,61 @@ void comenzarJuego(string codigo) {
 
 
 
+/**
+ * Agrega un jugador nuevo al juego que se indica.
+ * @param codigo
+ * @param nombreJugador
+ */
+string jugadorNuevo(string codigo, string nombreJugador) {
 
+    int numJuego = getJuego(codigo);
+
+    if (numJuego >= 0) {
+
+        ///Guarda el juego que se modificará en una variable
+        Juego* juegoActual = juegosActuales[numJuego];
+
+        ///Ingresa al nuevo jugador
+        bool isAdded = juegoActual->addJugador(nombreJugador);
+
+        if (isAdded == true) {
+
+            ///Verifica si el juego está listo para iniciar cuando todos los jugadores estén completos
+            bool comenzar = juegoActual->checkJugadoresCompletos();
+
+            if (comenzar == true) {
+                comenzarJuego(codigo);
+            }
+
+
+            //*************************************Pruebas*********************************************************
+
+            //Cantidad de jugadores
+            cout << "\nCantidad de Jugadores Actuales en Juego(" << juegoActual->getCodigo()
+                 << ") : " << juegoActual->getCantJugadoresActuales() << "\n" << endl;
+
+            //*****************************************************************************************************
+
+
+            return nombreJugador + " ha sido agregador al juego!";
+
+        } else {
+
+            cout << "Todos los espacios disponibles estan ocupados." << endl;
+
+            return "Todos los espacios disponibles estan ocupados.";
+
+        }
+
+
+    }
+        ///Cuando no hay juegos definidos
+    else {
+        cout << "No se puede ingresar el juego, si este no está definido." << endl;
+        return "No se puede ingresar el juego, si este no está definido.";
+    }
+
+}
 
 
 
@@ -333,6 +395,8 @@ void getInstruction(string instruccion, string codigo){
 
     if (instruccion == "Iniciar") {
 
+        /*
+
         //TEST
 
         iniciarScrabble("4", "Jugador_1");
@@ -340,8 +404,10 @@ void getInstruction(string instruccion, string codigo){
         jugadorNuevo(codigo, "Jugador_3");
         jugadorNuevo(codigo, "Jugador_4");
 
+        */
 
-    } else if (instruccion == "Comenzar") {
+    }
+    else if (instruccion == "Comenzar") {
 
         comenzarJuego(codigo);
 
@@ -432,11 +498,15 @@ int main(int argc, char **argv) {
             printf("READ: %s\n", buff);
 
 
+
+
             ///NOMBRE JUGADOR
             struct json_object *tempJugador;
             json_object *parsed_jsonJugador = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonJugador, "JUGADOR", &tempJugador);
             printf("Jugador: %s\n", json_object_get_string(tempJugador));
+
+
 
             ///JUGADORES PERMITIDOS
             struct json_object *tempCantidad;
@@ -446,7 +516,12 @@ int main(int argc, char **argv) {
 
             ///Creacion del juego -> Cuando viene ambos parametros en JSON (CODIGO y JUGADOR)
             if (json_object_get_string(tempCantidad) != 0 && json_object_get_string(tempJugador) != 0) {
-                iniciarScrabble(json_object_get_string(tempCantidad), json_object_get_string(tempJugador));
+
+                string codigoCliente = iniciarScrabble(json_object_get_string(tempCantidad),
+                        json_object_get_string(tempJugador));
+
+                send(fd2,codigoCliente.c_str(),MAXDATASIZE,0);
+
             }
 
             ///CODIGO
@@ -454,12 +529,18 @@ int main(int argc, char **argv) {
             json_object *parsed_jsonCodigo = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonCodigo, "CODIGO", &tempCodigo);
             printf("Codigo: %s\n", json_object_get_string(tempCodigo));
-            send(fd2,"Bienvenido a mi servidor.\n",22,0);
+            //send(fd2,"Bienvenido a mi servidor .\n",MAXDATASIZE,0);
 
             ///Agrega un jugador al juego cuando no se incluye la cantidad de jugadores permitidos
             ///HACER FUNCION DE AGREGAR JUGADOR
-            if (json_object_get_string(tempJugador) != 0 && json_object_get_string(tempCantidad) == 0) {
-                jugadorNuevo(json_object_get_string(tempJugador), json_object_get_string(tempCodigo));
+
+            ///Vinculará al jugador a un juego
+            if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempJugador) != 0) {
+                string statusJugadorCliente = jugadorNuevo(json_object_get_string(tempCodigo),
+                        json_object_get_string(tempJugador));
+
+                send(fd2,statusJugadorCliente.c_str(),MAXDATASIZE,0);
+                send(fd2,"TEST DOBLE SEND",MAXDATASIZE,0);
             }
 
 
@@ -472,8 +553,8 @@ int main(int argc, char **argv) {
             ///Llama a funcion para verificar la instruccion
             if (json_object_get_string(tempBoton) != 0 && json_object_get_string(tempCodigo) != 0) {
                 getInstruction(json_object_get_string(tempBoton), json_object_get_string(tempCodigo));
-            }
 
+            }
 
 
             ///Reestablece el buffer

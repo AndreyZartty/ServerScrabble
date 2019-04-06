@@ -71,8 +71,8 @@ public:
 
     //Funciones
     void generarCodigo();
-    void generarCodigo(int numJuego);
-    void addJugador(string nombre);
+    bool addJugador(string nombre);
+    bool checkJugadoresCompletos();
     void crearFichas();
     void repartirFichas();
     void completarFichas(Jugador* jugador);

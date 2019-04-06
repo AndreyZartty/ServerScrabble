@@ -275,24 +275,14 @@ void Juego::setGanador(Jugador* _ganador) {
 
 //Funciones
 
-/**
- * Genera un codigo de prueba
- * @param numJuego
- */
-void Juego::generarCodigo(int numJuego) {
-    string numJuegoStr = to_string(numJuego);
-    if (numJuego >= 10) {
-        setCodigo("00" + numJuegoStr);
-    } else {
-        setCodigo("000" + numJuegoStr);
-    }
-    cout << "\nCodigo de Juego #" << numJuegoStr << ": " << codigo << endl;
-}
 
 /**
  * Genera el codigo con caracteres aleatorios
  */
 void Juego::generarCodigo(){
+
+    srand (time(NULL));
+
     string abecedario = "abcdefghijklmnopqrstuvwxyz";
     string numeros = "1234567890";
     string abecedario2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -317,28 +307,58 @@ void Juego::generarCodigo(){
 
 /**
  * Añade un jugador y verifica si hay campo en el juego.
- * @param nJugador
+ * @param nombre - nombre del jugador por agregar
  */
-void Juego::addJugador(string nombre) {
-    if (j4 == nullptr) {
-        Jugador* nJugador = new Jugador(nombre);
-        if (j3 == nullptr) {
-            if (j2 == nullptr) {
-                if (j1 == nullptr) {
-                    j1 = nJugador;
-                } else {
-                    j2 = nJugador;
-                }
-            } else {
-                j3 = nJugador;
-            }
+bool Juego::addJugador(string nombre) {
+
+    Jugador* nJugador = new Jugador(nombre);
+
+    if (cantJugadoresPermitidos == 2 && cantJugadoresActuales < 2) {
+        if (j1 == nullptr) {
+            j1 = nJugador;
+        } else {
+            j2 = nJugador;
+        }
+        cantJugadoresActuales++;
+    } else if (cantJugadoresPermitidos == 3 && cantJugadoresActuales < 3) {
+        if (j1 == nullptr) {
+            j1 = nJugador;
+        } else if (j2 == nullptr) {
+            j2 = nJugador;
+        } else {
+            j3 = nJugador;
+        }
+        cantJugadoresActuales++;
+    } else if (cantJugadoresPermitidos == 4 && cantJugadoresActuales < 4) {
+        if (j1 == nullptr) {
+            j1 = nJugador;
+        } else if (j2 == nullptr) {
+            j2 = nJugador;
+        } else if (j3 == nullptr){
+            j3 = nJugador;
         } else {
             j4 = nJugador;
         }
         cantJugadoresActuales++;
-
-    } else {
+    }
+    else {
         cout << "Todos los espacios disponibles estan ocupados." << endl;
+
+        return false;
+    }
+}
+
+
+/**
+ * Verifica si están todos los jugadores completos.
+ * @return
+ */
+bool Juego::checkJugadoresCompletos() {
+    if (cantJugadoresActuales == cantJugadoresPermitidos) {
+        return true;
+    }
+    else {
+        return false;
     }
 }
 
