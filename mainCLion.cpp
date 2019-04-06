@@ -26,6 +26,7 @@
 
 using namespace std;
 
+
 ///Variable estática: cantidad de Juegos activos en el servidor
 static int cantJuegosActuales = 0;
 ///Variable estática: Array con los juegos activos (Cantidad máxima de juegos será predefinida)
@@ -163,10 +164,6 @@ void iniciarScrabble(string cantJugadoresPermitidos, string nombreJugador) {
 
 
 
-
-
-
-
 /**
  * Comienza el juego, se reparten las fichas y el primer turno es decidido.
  * @param codigo - para saber que juego comenzar
@@ -193,7 +190,7 @@ void comenzarJuego(string codigo) {
         juegoActual->getPoolFichas()->printList();
 
         //Imprime el jugador en turno
-        cout << "Jugador en turno: " << juegoActual->getEnTurno()->getNombre() << endl;
+        cout << "\nJugador en turno: " << juegoActual->getEnTurno()->getNombre() << endl;
 
         //*****************************************************************************************************
 
@@ -234,7 +231,7 @@ void pasarTurno(string codigo) {
         //*************************************Pruebas*********************************************************
 
         //Imprime el jugador en turno
-        cout << "Jugador en turno: " << juegoActual->getEnTurno()->getNombre() << endl;
+        cout << "\nJugador en turno: " << juegoActual->getEnTurno()->getNombre() << endl;
 
         //*****************************************************************************************************
 
@@ -315,10 +312,6 @@ void getInstruction(string instruccion, string codigo){
  */
 int main(int argc, char **argv) {
 
-
-
-
-    //******************************************************SERVER******************************************************
 
     int fd, fd2;
 
@@ -438,72 +431,7 @@ int main(int argc, char **argv) {
         close(fd2);
 
     }
-    //*****************************************************************************************************
 
-
-
-
-
-
-
-
-
-    /*
-
-
-    //Inicio de la ventana del Juego
-    inicio();
-
-
-
-
-
-
-
-    //Comienzo del juego
-    comenzarJuego();
-
-
-
-
-    //Simula al jugador1 como si estuviese en turno
-    juegoTest->setEnTurno(jugador1);
-    cout<<"\n\nEn turno: " << juegoTest->getEnTurno()->getNombre() << endl;
-
-
-
-    cout << "\nLista " << juegoTest->getEnTurno()->getNombre() << endl;
-
-    //Imprime la cantidad de fichas del Jugador1
-    juegoTest->getJ1()->getListaFichas()->printList();
-
-    //Simulacion de haber escogido una ficha en la lista del jugador
-    Ficha* fichaPreescogida = juegoTest->getJ1()->getListaFichas()->getHead()->getFicha();
-    cout << "\nFicha por mover: " << fichaPreescogida->getLetra() << endl;
-
-
-    cout << "\n\nLista Cuadricula" << endl;
-
-    //Imprime la lista de fichas que tendria la cuadricula
-    juegoTest->getCuadricula()->getListaCuadricula()->printList();
-
-
-    ///Ficha que se movera a la cuadricula, proveniente del jugador
-    Ficha* fichaEnMovimiento = juegoTest->getJ1()->colocarFicha(fichaPreescogida);
-
-    ///Agregar la ficha del jugador a la cuadricula
-    juegoTest->getCuadricula()->getListaCuadricula()->newNode(fichaEnMovimiento);
-    cout << "\nSe ha agregado la ficha: " << fichaEnMovimiento->getLetra() << endl;
-
-    cout << "\n\nLista Cuadricula" << endl;
-    //Imprime la lista de fichas que estaran en la cuadricula
-    juegoTest->getCuadricula()->getListaCuadricula()->printList();
-
-    cout << "\n\nLista " << juegoTest->getEnTurno()->getNombre() << endl;
-    //Imprime la lista de fichas del jugador1
-    juegoTest->getJ1()->getListaFichas()->printList();
-
-*/
 
     return 0;
 

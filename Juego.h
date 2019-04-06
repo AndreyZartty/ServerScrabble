@@ -70,6 +70,7 @@ public:
     void setGanador(Jugador *ganador);
 
     //Funciones
+    void generarCodigo();
     void generarCodigo(int numJuego);
     void addJugador(string nombre);
     void crearFichas();

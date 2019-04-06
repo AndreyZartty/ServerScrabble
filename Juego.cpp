@@ -16,7 +16,7 @@
  * Constructor de Juego.
  */
 Juego::Juego(int _cantJugadoresPermitidos){
-    codigo = "0000";
+    generarCodigo();
     creator = new FichaCreator();
     poolFichas = nullptr;
     cantFichas = 0;
@@ -275,7 +275,10 @@ void Juego::setGanador(Jugador* _ganador) {
 
 //Funciones
 
-
+/**
+ * Genera un codigo de prueba
+ * @param numJuego
+ */
 void Juego::generarCodigo(int numJuego) {
     string numJuegoStr = to_string(numJuego);
     if (numJuego >= 10) {
@@ -284,6 +287,32 @@ void Juego::generarCodigo(int numJuego) {
         setCodigo("000" + numJuegoStr);
     }
     cout << "\nCodigo de Juego #" << numJuegoStr << ": " << codigo << endl;
+}
+
+/**
+ * Genera el codigo con caracteres aleatorios
+ */
+void Juego::generarCodigo(){
+    string abecedario = "abcdefghijklmnopqrstuvwxyz";
+    string numeros = "1234567890";
+    string abecedario2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string newCodigo;
+    while (newCodigo.length() < 8){
+        int random = rand() % 3 +1;
+        if (random == 1){
+            int r2 = rand() % 26;
+            newCodigo = newCodigo + abecedario[r2];
+        }
+        else if (random == 2){
+            int r2 = rand() % 10;
+            newCodigo = newCodigo + numeros[r2];
+        }
+        else if (random == 3){
+            int r2 = rand() % 26;
+            newCodigo = newCodigo + abecedario2[r2];
+        }
+    }
+    setCodigo(newCodigo);
 }
 
 /**
@@ -451,7 +480,7 @@ void Juego::completarFichas(Jugador* jugador) {
 
     if (cantFichas > 7) {
         for (cantFichas; cantFichas == 7; cantFichas++) {
-            ///Obtiene un int aleatorio
+            ///Obtiene un int aleatorio;;
             int random = rand() % cantFichas + 1;
             ///Obtiene la ficha del pool
             Ficha* randomFicha = poolFichas->getNode(random)->getFicha();
