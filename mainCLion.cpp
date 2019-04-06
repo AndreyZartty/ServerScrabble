@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdlib.h>
+#include <fstream>
 #include <typeinfo>
 #include "Juego.h"
 
@@ -201,6 +203,60 @@ void comenzarJuego(string codigo) {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+void lectura(string nombre, string dcc[]){
+    fstream datos(nombre.c_str());
+    string linea;
+    int c=0;
+    if(!datos.is_open()){
+        datos.open(nombre.c_str(), ios::in);
+    }
+    if(nombre == "ServerScrabble/diccio.txt"){
+        while (getline(datos,linea)){
+            //cout << linea << endl;
+            dcc[c] =linea;
+            c++;
+        }
+        datos.close();
+    }
+    else{
+        cout << "Fichero inexistente" << endl;
+    }
+}
+
+int comprobarPalabra(string nueva){
+    int aDcc = 186594;
+    string diccionario[190000] ={};
+    lectura("ServerScrabble/diccio.txt", diccionario);
+    int c=0 ;
+    while(c < aDcc){
+        string actual = diccionario[c].substr(0,diccionario[c].length()-1);
+        //cout << actual << endl;
+        if(actual.compare(nueva) == 0){
+            cout << "La palabra '"<< nueva << "' se encuentra en el diccionario en la posición: "<< c << endl;
+            return 0;
+        }
+        c++;
+    }
+    cout << "La palabra '" << nueva << "' no se encuentra en el diccionario."<< endl;
+}
+
+
+
+
+
+
+
+
 
 
 /**
@@ -431,8 +487,5 @@ int main(int argc, char **argv) {
         close(fd2);
 
     }
-
-
-    return 0;
 
 }
