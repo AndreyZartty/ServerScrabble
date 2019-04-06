@@ -1,1 +1,1 @@
-# ServerScrabble
+# Scrabble
