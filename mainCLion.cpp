@@ -454,6 +454,7 @@ int main(int argc, char **argv) {
             json_object *parsed_jsonCodigo = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonCodigo, "CODIGO", &tempCodigo);
             printf("Codigo: %s\n", json_object_get_string(tempCodigo));
+            send(fd2,"Bienvenido a mi servidor.\n",22,0);
 
             ///Agrega un jugador al juego cuando no se incluye la cantidad de jugadores permitidos
             ///HACER FUNCION DE AGREGAR JUGADOR
