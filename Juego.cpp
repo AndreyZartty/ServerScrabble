@@ -320,6 +320,7 @@ bool Juego::addJugador(string nombre) {
             j2 = nJugador;
         }
         cantJugadoresActuales++;
+        return true;
     } else if (cantJugadoresPermitidos == 3 && cantJugadoresActuales < 3) {
         if (j1 == nullptr) {
             j1 = nJugador;
@@ -329,6 +330,7 @@ bool Juego::addJugador(string nombre) {
             j3 = nJugador;
         }
         cantJugadoresActuales++;
+        return true;
     } else if (cantJugadoresPermitidos == 4 && cantJugadoresActuales < 4) {
         if (j1 == nullptr) {
             j1 = nJugador;
@@ -340,6 +342,7 @@ bool Juego::addJugador(string nombre) {
             j4 = nJugador;
         }
         cantJugadoresActuales++;
+        return true;
     }
     else {
         cout << "Todos los espacios disponibles estan ocupados." << endl;
