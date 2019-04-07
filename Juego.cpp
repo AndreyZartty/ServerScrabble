@@ -617,15 +617,35 @@ void Juego::checkTerminado() {
  * Define quien es el jugador que continua en turno.
  */
 void Juego::siguienteTurno() {
-    if (enTurno == j1) {
-        setEnTurno(j2);
-    } else if (enTurno == j2) {
-        setEnTurno(j3);
-    } else if (enTurno == j3) {
-        setEnTurno(j4);
-    } else {
-        setEnTurno(j1);
+
+    if (cantJugadoresActuales == 2) {
+        if (enTurno == j1) {
+            setEnTurno(j2);
+        } else {
+            setEnTurno(j1);
+        }
     }
+
+    else if (cantJugadoresActuales == 3) {
+        if (enTurno == j1) {
+            setEnTurno(j2);
+        } else if (enTurno == j2) {
+            setEnTurno(j3);
+        } else {
+            setEnTurno(j1);
+        }
+    }
+
+    else {
+        if (enTurno == j1) {
+            setEnTurno(j2);
+        } else if (enTurno == j2) {
+            setEnTurno(j3);
+        } else if (enTurno == j3) {
+            setEnTurno(j4);
+        } else {
+            setEnTurno(j1);
+        }
+    }
+
 }
-
-

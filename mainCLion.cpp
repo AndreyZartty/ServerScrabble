@@ -12,6 +12,7 @@
 #include <cstring>
 #include <json-c/json.h>
 #include <string>
+#include <arpa/inet.h>
 
 #include "Juego.h"
 
@@ -518,6 +519,47 @@ string pasarTurno(string codigo) {
 }
 
 
+string sendEnTurno(string codigo) {
+
+    int numJuego = getJuego(codigo);
+
+    if (numJuego >= 0) {
+
+        ///Guarda el juego que se modificará en una variable
+        Juego *juegoActual = juegosActuales[numJuego];
+
+        string nombreEnTurno = juegoActual->getEnTurno()->getNombre();
+
+        json_object *jobjEnTurno = json_object_new_object();
+
+        string strEnTurno = juegoActual->getEnTurno()->getNombre();
+
+        json_object *json_EnTurno = json_object_new_string(strEnTurno.c_str());
+
+        json_object_object_add(jobjEnTurno, "TURNO", json_EnTurno);
+
+        return json_object_to_json_string(jobjEnTurno);
+
+
+    }
+        ///Cuando no hay juegos definidos
+    else {
+        cout << "No se puede pasar el turno en el juego, si este no está definido." << endl;
+
+        json_object *jobjPasar = json_object_new_object();
+
+        string strPasar = "No se puede pasar el turno en el juego, si este no está definido.";
+
+        json_object *json_Pasar = json_object_new_string(strPasar.c_str());
+
+        json_object_object_add(jobjPasar, "ERROR", json_Pasar);
+
+        return json_object_to_json_string(jobjPasar);
+    }
+}
+
+
+
 /**
  *
  * @param nombre
@@ -670,9 +712,6 @@ int main(int argc, char **argv) {
             printf("error en accept()\n");
             exit(-1);
         }
-        int ip = getsockname(fd2,(struct sockaddr *) &server, &address_size);
-
-        printf("IP: %s\n",ip);
 
         printf("\n\nSe obtuvo una conexión de un cliente.\n");
 
@@ -709,6 +748,13 @@ int main(int argc, char **argv) {
             json_object_object_get_ex(parsed_jsonCantidad, "JUGADORES PERMITIDOS", &tempCantidad);
             printf("Jugadores Permitidos: %s\n", json_object_get_string(tempCantidad));
 
+            ///KEY: IP
+            ///Obtiene la IP proveniente del cliente para saber que cliente modificar
+            struct json_object *tempIP;
+            json_object *parsed_jsonIP = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonIP, "IP", &tempIP);
+            printf("IP: %s\n", json_object_get_string(tempIP));
+
             ///KEY: CODIGO
             ///Obtiene el codigo proveniente del cliente para saber que juego modificar
             struct json_object *tempCodigo;
@@ -737,11 +783,18 @@ int main(int argc, char **argv) {
             json_object_object_get_ex(parsed_jsonPasar, "PASAR", &tempPasar);
             printf("Pasar: %s\n", json_object_get_string(tempPasar));
 
+            ///KEY: TURNO
+            ///Obtiene un request para obtener quien esta en turno
+            struct json_object *tempTurno;
+            json_object *parsed_jsonTurno = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonTurno, "TURNO", &tempTurno);
+            printf("Turno: %s\n", json_object_get_string(tempTurno));
+
             ///JSON Verificaciones
 
             ///Creacion del juego
             ///Verifica que reciba los KEYS: JUGADORES PERMITIDOS Y JUGADOR
-            if (json_object_get_string(tempCantidad) != 0 && json_object_get_string(tempJugador) != 0) {
+            if (json_object_get_string(tempCantidad) != 0 && json_object_get_string(tempJugador) != 0 && json_object_get_string(tempIP) != 0) {
                 ///JSON saliente del servidor
                 string codigoCliente = iniciar(json_object_get_string(tempCantidad),
                                                            json_object_get_string(tempJugador));
@@ -784,6 +837,15 @@ int main(int argc, char **argv) {
                 string pasar = pasarTurno(json_object_get_string(tempCodigo));
                 ///Envio al cliente
                 send(fd2, pasar.c_str(), MAXDATASIZE, 0);
+            }
+
+            ///Obtendra un request para obtener quien esta en turno
+            ///Verifica que reciba los KEYS: TURNO Y CODIGO
+            if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempTurno) != 0) {
+
+                string enTurno = sendEnTurno(json_object_get_string(tempCodigo));
+
+                send(fd2, enTurno.c_str(), MAXDATASIZE, 0);
             }
 
 
