@@ -670,6 +670,9 @@ int main(int argc, char **argv) {
             printf("error en accept()\n");
             exit(-1);
         }
+        int ip = getsockname(fd2,(struct sockaddr *) &server, &address_size);
+
+        printf("IP: %s\n",ip);
 
         printf("\n\nSe obtuvo una conexión de un cliente.\n");
 
