@@ -111,6 +111,8 @@ void List::deleteNode(Ficha* ficha){
 
 /**
  * Retorna un Node por su index
+ * @param
+ * @return
  */
 NodeFicha* List::getNode(int index){
     NodeFicha* temp = nullptr;
@@ -123,6 +125,22 @@ NodeFicha* List::getNode(int index){
         }
     }
     return temp;
+}
+
+/**
+ * Retorna un node por su letra
+ * @param letra
+ * @return
+ */
+NodeFicha* List::getNode(string letra) {
+    NodeFicha* temp = head;
+    while (temp != nullptr) {
+        if (temp->getFicha()->getLetra() == letra) {
+            return temp;
+        }
+        temp = temp->getNext();
+    }
+    return nullptr;
 }
 
 /**

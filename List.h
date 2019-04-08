@@ -29,6 +29,7 @@ public:
     void newNode(Ficha* ficha);
     void deleteNode(Ficha* ficha);
     NodeFicha* getNode(int index);
+    NodeFicha* getNode(string letra);
     void printList();
 
 

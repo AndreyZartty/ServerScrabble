@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "Juego.h"
+#include "Cuadricula.h"
 
 /**
  * Representa al Juego.

@@ -584,6 +584,10 @@ void lectura(string nombre, string dcc[]) {
     }
 }
 
+
+
+
+
 /**
  * Verifica si la palabra existe en el diccionario.
  * @param nueva
@@ -600,39 +604,138 @@ string verificarPalabraAux(string nueva) {
         if (actual.compare(nueva) == 0) {
             string strResultado = "La palabra '" + nueva + "' se encuentra en el diccionario en la posición: " + to_string(c) ;
             cout << strResultado << endl;
-            return strResultado;
+
+            return "true";
         }
         c++;
     }
     string strResultado = "La palabra '" + nueva + "' no se encuentra en el diccionario.";
     cout << strResultado << endl;
-    return strResultado;
+
+    ///Retornará un "false" que será verificado en el servidor
+
+    return "false";
 }
 
 
 
-
-string verificarPalabra(string codigo, string palabra) {
+/**
+ *
+ * @param codigo
+ * @param F1L
+ * @param F1P
+ * @param F2L
+ * @param F2P
+ * @param F3L
+ * @param F3P
+ * @param F4L
+ * @param F4P
+ * @param F5L
+ * @param F5P
+ * @param F6L
+ * @param F6P
+ * @param F7L
+ * @param F7P
+ * @return
+ */
+string concatenarFichas(string codigo, string F1L, string F1P, string F2L, string F2P,
+                        string F3L, string F3P, string F4L, string F4P,
+                        string F5L, string F5P, string F6L, string F6P,
+                        string F7L, string F7P) {
 
     int numJuego = getJuego(codigo);
 
     if (numJuego >= 0) {
 
+        ///Guarda el juego que se modificará en una variable
+        Juego *juegoActual = juegosActuales[numJuego];
 
-        json_object *jobjPalabra = json_object_new_object();
+        Jugador* jugadorEnTurno = juegoActual->getEnTurno();
 
-        ///Manda a verificar la palabra
-        string strPalabra = verificarPalabraAux(palabra);
+        if (F1L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F1L)->getFicha();
+            int fila = F1P[0];
+            int columna = F1P[1];
 
-        json_object *json_Palabra = json_object_new_string(strPalabra.c_str());
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
 
-        json_object_object_add(jobjPalabra, "PALABRA", json_Palabra);
+        if (F2L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F2L)->getFicha();
+            int fila = F2P[0];
+            int columna = F2P[1];
 
-        return json_object_to_json_string(jobjPalabra);
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
 
+        if (F3L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F3L)->getFicha();
+            int fila = F3P[0];
+            int columna = F3P[1];
+
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
+
+        if (F4L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F4L)->getFicha();
+            int fila = F4P[0];
+            int columna = F4P[1];
+
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
+
+        if (F5L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F5L)->getFicha();
+            int fila = F5P[0];
+            int columna = F5P[1];
+
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
+
+        if (F6L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F6L)->getFicha();
+            int fila = F6P[0];
+            int columna = F6P[1];
+
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
+
+        if (F7L != "") {
+            Ficha* fichaPorPasar = jugadorEnTurno->getListaFichas()->getNode(F7L)->getFicha();
+            int fila = F7P[0];
+            int columna = F7P[1];
+
+            juegoActual->getCuadricula()->addFicha(fila, columna, fichaPorPasar);
+        }
+
+
+        string palabraPorVerificar = F1L + F2L + F3L + F4L + F5L + F6L + F7L;
+
+        string resultadoVerificacion = verificarPalabraAux(palabraPorVerificar);
+
+        json_object *jobjVerificacion = json_object_new_object();
+
+        json_object *json_Verificacion;
+
+        ///Cuando la palabra no exista
+        if (resultadoVerificacion == "false") {
+
+            json_Verificacion = json_object_new_string(resultadoVerificacion.c_str());
+
+        }
+        ///Cuando la palabra exista, se enviará el puntaje del jugador
+        else {
+
+            json_Verificacion = json_object_new_string(resultadoVerificacion.c_str());
+
+        }
+
+        json_object_object_add(jobjVerificacion, "VERIFICACION", json_Verificacion);
+
+        return json_object_to_json_string(jobjVerificacion);
 
     }
-    ///Cuando no hay juegos definidos
+        ///Cuando no hay juegos definidos
     else {
         cout << "No se puede hacer Scrabble! en el juego, si este no está definido." << endl;
 
@@ -648,7 +751,11 @@ string verificarPalabra(string codigo, string palabra) {
 
     }
 
+
 }
+
+
+
 
 /**
  * Boton Scrabble!
@@ -744,6 +851,7 @@ int main(int argc, char **argv) {
             ///KEY: JUGADOR
             ///Obtiene el nombre del jugador ingresado en el cliente.
             struct json_object *tempJugador;
+            cout<<"TEST1"<<endl;
             json_object *parsed_jsonJugador = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonJugador, "JUGADOR", &tempJugador);
             printf("Jugador: %s\n", json_object_get_string(tempJugador));
@@ -751,6 +859,7 @@ int main(int argc, char **argv) {
             ///KEY: JUGADORES PERMITIDOS
             ///Obtiene la cantidad de jugadores permitidos ingresado en el cliente.
             struct json_object *tempCantidad;
+            cout<<"TEST2"<<endl;
             json_object *parsed_jsonCantidad = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonCantidad, "JUGADORES PERMITIDOS", &tempCantidad);
             printf("Jugadores Permitidos: %s\n", json_object_get_string(tempCantidad));
@@ -758,6 +867,7 @@ int main(int argc, char **argv) {
             ///KEY: IP
             ///Obtiene la IP proveniente del cliente para saber que cliente modificar
             struct json_object *tempIP;
+            cout<<"TEST3"<<endl;
             json_object *parsed_jsonIP = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonIP, "IP", &tempIP);
             printf("IP: %s\n", json_object_get_string(tempIP));
@@ -765,6 +875,7 @@ int main(int argc, char **argv) {
             ///KEY: CODIGO
             ///Obtiene el codigo proveniente del cliente para saber que juego modificar
             struct json_object *tempCodigo;
+            cout<<"TEST4"<<endl;
             json_object *parsed_jsonCodigo = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonCodigo, "CODIGO", &tempCodigo);
             printf("Codigo: %s\n", json_object_get_string(tempCodigo));
@@ -772,6 +883,7 @@ int main(int argc, char **argv) {
             ///KEY: JUGARCL
             ///Obtiene la espera de los jugadores por iniciar.
             struct json_object *tempComenzar;
+            cout<<"TEST5"<<endl;
             json_object *parsed_jsonComenzar = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonComenzar, "JUGARCL", &tempComenzar);
             printf("Status para Jugar: %s\n", json_object_get_string(tempComenzar));
@@ -779,6 +891,7 @@ int main(int argc, char **argv) {
             ///KEY: NOMBRES
             ///Obtiene un request para obtener los nombres de los jugadores para graficarlos.
             struct json_object *tempNombres;
+            cout<<"TEST6"<<endl;
             json_object *parsed_jsonNombres = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonNombres, "NOMBRES", &tempNombres);
             printf("Nombres: %s\n", json_object_get_string(tempNombres));
@@ -786,6 +899,8 @@ int main(int argc, char **argv) {
             ///KEY: PASAR
             ///Obtiene un request para pasar de turno
             struct json_object *tempPasar;
+            cout<<"TEST7"<<endl;
+            cout<<buff<<endl;
             json_object *parsed_jsonPasar = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonPasar, "PASAR", &tempPasar);
             printf("Pasar: %s\n", json_object_get_string(tempPasar));
@@ -793,6 +908,7 @@ int main(int argc, char **argv) {
             ///KEY: TURNO
             ///Obtiene un request para obtener quien esta en turno
             struct json_object *tempTurno;
+            cout<<"TEST8"<<endl;
             json_object *parsed_jsonTurno = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonTurno, "TURNO", &tempTurno);
             printf("Turno: %s\n", json_object_get_string(tempTurno));
@@ -800,6 +916,7 @@ int main(int argc, char **argv) {
             ///KEY: PALABRA
             ///Obtiene un request para verificar la palabra
             struct json_object *tempPalabra;
+            cout<<"TEST9"<<endl;
             json_object *parsed_jsonPalabra = json_tokener_parse(buff);
             json_object_object_get_ex(parsed_jsonPalabra, "PALABRA", &tempPalabra);
             printf("Palabra: %s\n", json_object_get_string(tempPalabra));
@@ -970,12 +1087,79 @@ int main(int argc, char **argv) {
             ///Verifica que reciba los KEYS: PALABRA Y CODIGO
             if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempPalabra) != 0) {
 
-                string resultPalabra = verificarPalabra(json_object_get_string(tempCodigo), json_object_get_string(tempPalabra));
+                //string resultPalabra = verificarPalabra(json_object_get_string(tempCodigo), json_object_get_string(tempPalabra));
 
-                send(fd2, resultPalabra.c_str(), MAXDATASIZE, 0);
+                //send(fd2, resultPalabra.c_str(), MAXDATASIZE, 0);
             }
 
-            
+            ///Obtendra un request para verificar las letras recien puestas en el tablero
+            if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempF1L) != 0 && json_object_get_string(tempF1P) != 0) {
+
+                string f1l = json_object_get_string(tempF1L);
+                string f1p = json_object_get_string(tempF1P);
+                string f2l = "";
+                string f2p = "";
+                string f3l = "";
+                string f3p = "";
+                string f4l = "";
+                string f4p = "";
+                string f5l = "";
+                string f5p = "";
+                string f6l = "";
+                string f6p = "";
+                string f7l = "";
+                string f7p = "";
+
+                if (json_object_get_string(tempF2L) != 0 && json_object_get_string(tempF2P) != 0) {
+
+                    f2l = json_object_get_string(tempF2L);
+                    f2p = json_object_get_string(tempF2P);
+
+                    if (json_object_get_string(tempF3L) != 0 && json_object_get_string(tempF3P) != 0) {
+
+                        f3l = json_object_get_string(tempF3L);
+                        f3p = json_object_get_string(tempF3P);
+
+                        if (json_object_get_string(tempF4L) != 0 && json_object_get_string(tempF4P) != 0) {
+
+                            f4l = json_object_get_string(tempF4L);
+                            f4p = json_object_get_string(tempF4P);
+
+                            if (json_object_get_string(tempF5L) != 0 && json_object_get_string(tempF5P) != 0) {
+
+                                f5l = json_object_get_string(tempF5L);
+                                f5p = json_object_get_string(tempF5P);
+
+                                if (json_object_get_string(tempF6L) != 0 && json_object_get_string(tempF6P) != 0) {
+
+                                    f6l = json_object_get_string(tempF6L);
+                                    f6p = json_object_get_string(tempF6P);
+
+                                    if (json_object_get_string(tempF7L) != 0 && json_object_get_string(tempF7P) != 0) {
+
+                                        f7l = json_object_get_string(tempF7L);
+                                        f7p = json_object_get_string(tempF7P);
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                string concatenacionPalabra = concatenarFichas(json_object_get_string(tempCodigo),
+                        f1l, f1p, f2l, f2p, f3l, f3p, f4l, f4p, f5l, f5p, f6l, f6p, f7l, f7p);
+
+                send(fd2, concatenacionPalabra.c_str(), MAXDATASIZE, 0);
+
+            }
+
+
 
 
             ///Reestablece el buffer

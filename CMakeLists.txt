@@ -7,7 +7,7 @@ include_directories(.)
 
 add_executable(ServerScrabble
         README.md Ficha.cpp Ficha.h FichaCreator.cpp FichaCreator.h Juego.cpp Juego.h Jugador.cpp
-        Jugador.h List.cpp List.h mainCLion.cpp NodeFicha.cpp NodeFicha.h Cuadricula.cpp Cuadricula.h)
+        Jugador.h List.cpp List.h mainCLion.cpp NodeFicha.cpp NodeFicha.h Cuadricula.cpp Cuadricula.h CNode.cpp CNode.h)
 
 
 find_package(PkgConfig REQUIRED)
