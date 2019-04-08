@@ -181,12 +181,6 @@ void FichaCreator::initialCreate() {
 }
 
 
-
-int getPoints() {
-
-}
-
-
 /**
  * Getter del pool
  * @return pool

@@ -47,7 +47,6 @@ private:
     int cantZ;
 
 public:
-
     FichaCreator();
     void initialCreate();
     List* getPool();

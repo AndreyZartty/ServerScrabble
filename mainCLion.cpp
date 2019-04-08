@@ -56,11 +56,12 @@ int juegoNuevo(int cantJugadores) {
         cout << "\nJuego nuevo creado!" << endl;
         cout << "Juegos activos: " << cantJuegosActuales << endl;
 
-
+        //*************************************Consola*********************************************************
 
         return cantJuegosActuales - 1;
 
     } else {
+
         cout << "\nLimite de juegos activos alcanzado." << endl;
 
         return -1;
@@ -78,17 +79,18 @@ int getJuego(string codigo){
 
     int i = 0;
     while (i < cantJuegosActuales) {
+
         if (codigo == juegosActuales[i]->getCodigo()) {
+
             cout << "Se modificará el Juego #" << i+1 << " con codigo: " << juegosActuales[i]->getCodigo() << endl;
             return i;
         }
         i++;
     }
+
     return -1;
 
 }
-
-
 
 
 /**
@@ -125,7 +127,6 @@ string iniciar(string cantJugadoresPermitidos, string nombreJugador) {
         //*****************************************************************************************************
 
 
-
         json_object *jobjSendCodigo = json_object_new_object();
 
 
@@ -136,8 +137,6 @@ string iniciar(string cantJugadoresPermitidos, string nombreJugador) {
 
 
         return json_object_to_json_string(jobjSendCodigo);
-
-
 
 
     }
@@ -162,12 +161,9 @@ string iniciar(string cantJugadoresPermitidos, string nombreJugador) {
 
         return json_object_to_json_string(jobjSendErrorCodigo);
 
-
     }
 
 }
-
-
 
 
 
@@ -213,6 +209,12 @@ void comenzarJuego(string codigo) {
 }
 
 
+
+/**
+ * Verifica el comienzo del juego
+ * @param codigo
+ * @return json de confirmacion de verificacion
+ */
 string verificarComenzado(string codigo) {
     int numJuego = getJuego(codigo);
 
@@ -259,15 +261,14 @@ string verificarComenzado(string codigo) {
         return json_object_to_json_string(jobjComenzar);
     }
 
-
 }
-
 
 
 /**
  * Agrega un jugador nuevo al juego que se indica.
  * @param codigo
  * @param nombreJugador
+ * @return json con confirmacion de agregado
  */
 string jugadorNuevo(string codigo, string nombreJugador) {
 
@@ -335,7 +336,6 @@ string jugadorNuevo(string codigo, string nombreJugador) {
 
         }
 
-
     }
         ///Cuando no hay juegos definidos
     else {
@@ -357,6 +357,11 @@ string jugadorNuevo(string codigo, string nombreJugador) {
 }
 
 
+/**
+ * Obtiene los nombres de todos los jugadores conectados al juego con el mismo codigo
+ * @param codigo
+ * @return json con los nombres
+ */
 string getNombres(string codigo) {
 
     int numJuego = getJuego(codigo);
@@ -458,6 +463,7 @@ string getNombres(string codigo) {
 /**
  * Pasa de turno, cambia de jugador enTurno y verifica si el juego podria terminar
  * @param codigo - para saber en que juego pasar el turno
+ * @return nombre de jugador en turno
  */
 string pasarTurno(string codigo) {
 
@@ -518,7 +524,11 @@ string pasarTurno(string codigo) {
 
 }
 
-
+/**
+ * Envia el jugador en turno
+ * @param codigo
+ * @return nombre de jugador en turno
+ */
 string sendEnTurno(string codigo) {
 
     int numJuego = getJuego(codigo);
@@ -561,7 +571,7 @@ string sendEnTurno(string codigo) {
 
 
 /**
- *
+ * Lee un archivo de texto con las palabras
  * @param nombre
  * @param dcc
  */
@@ -585,13 +595,10 @@ void lectura(string nombre, string dcc[]) {
 }
 
 
-
-
-
 /**
  * Verifica si la palabra existe en el diccionario.
  * @param nueva
- * @return
+ * @return bool de si encontró la palabra en el diccionario
  */
 string verificarPalabraAux(string nueva) {
     int aDcc = 186594;
@@ -615,12 +622,12 @@ string verificarPalabraAux(string nueva) {
     ///Retornará un "false" que será verificado en el servidor
 
     return "false";
+
 }
 
 
-
 /**
- *
+ * Concatena las fichas que se ponen en la cuadricula
  * @param codigo
  * @param F1L
  * @param F1P
@@ -636,7 +643,7 @@ string verificarPalabraAux(string nueva) {
  * @param F6P
  * @param F7L
  * @param F7P
- * @return
+ * @return verificacion de existencia de palabra y su correcta posicion
  */
 string concatenarFichas(string codigo, string F1L, string F1P, string F2L, string F2P,
                         string F3L, string F3P, string F4L, string F4P,
@@ -751,10 +758,7 @@ string concatenarFichas(string codigo, string F1L, string F1P, string F2L, strin
 
     }
 
-
 }
-
-
 
 
 /**
@@ -770,6 +774,8 @@ string scrabble(string codigo){
     }
     ///Cuando no hay juegos definidos
     else {
+
+        cout << "No se puede hacer Scrabble! en el juego, si este no está definido." << endl;
 
     }
 }
@@ -921,7 +927,9 @@ int main(int argc, char **argv) {
             json_object_object_get_ex(parsed_jsonPalabra, "PALABRA", &tempPalabra);
             printf("Palabra: %s\n", json_object_get_string(tempPalabra));
 
+
             ///LETRA FICHAS
+
 
             ///KEY: F1L
             ///Obtiene la Letra de la Ficha 1
@@ -972,7 +980,9 @@ int main(int argc, char **argv) {
             json_object_object_get_ex(parsed_jsonF7L, "F7L", &tempF7L);
             printf("F7L: %s\n", json_object_get_string(tempF7L));
 
-            ///POSICION FICHAS
+
+            ///POSICION & FICHAS
+
 
             ///KEY: F1P
             ///Obtiene la Posicion de la Ficha 1
@@ -1076,22 +1086,13 @@ int main(int argc, char **argv) {
             ///Obtendra un request para obtener quien esta en turno
             ///Verifica que reciba los KEYS: TURNO Y CODIGO
             if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempTurno) != 0) {
-
+                ///JSON saliente del servidor
                 string enTurno = sendEnTurno(json_object_get_string(tempCodigo));
-
+                ///Envio al cliente
                 send(fd2, enTurno.c_str(), MAXDATASIZE, 0);
-
             }
 
-            ///Obtendra un request para comprobar la palabra y sumar puntos
-            ///Verifica que reciba los KEYS: PALABRA Y CODIGO
-            if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempPalabra) != 0) {
-
-                //string resultPalabra = verificarPalabra(json_object_get_string(tempCodigo), json_object_get_string(tempPalabra));
-
-                //send(fd2, resultPalabra.c_str(), MAXDATASIZE, 0);
-            }
-
+            ///Verifica que reciba los  KEYS: CODIGO, --LETRAS-- Y --POSICIONES
             ///Obtendra un request para verificar las letras recien puestas en el tablero
             if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempF1L) != 0 && json_object_get_string(tempF1P) != 0) {
 
@@ -1151,15 +1152,13 @@ int main(int argc, char **argv) {
                     }
 
                 }
-
+                ///JSON saliente del servidor
                 string concatenacionPalabra = concatenarFichas(json_object_get_string(tempCodigo),
                         f1l, f1p, f2l, f2p, f3l, f3p, f4l, f4p, f5l, f5p, f6l, f6p, f7l, f7p);
-
+                ///Envio al cliente
                 send(fd2, concatenacionPalabra.c_str(), MAXDATASIZE, 0);
 
             }
-
-
 
 
             ///Reestablece el buffer
@@ -1177,4 +1176,5 @@ int main(int argc, char **argv) {
         close(fd2);
 
     }
+
 }

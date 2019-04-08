@@ -56,13 +56,14 @@ void List::setLen(int _len) {
     len = _len;
 }
 
+
 /**
  * Crea un nuevo Node con una Ficha para ingresarlo en List.
  * @param data - numero para la Ficha
  */
-void List::newNode(Ficha* ficha){
+void List::newNode(Ficha* _ficha){
 
-    NodeFicha* nNode = new NodeFicha(ficha);
+    NodeFicha* nNode = new NodeFicha(_ficha);
 
 
     if (head == nullptr) {
@@ -77,20 +78,21 @@ void List::newNode(Ficha* ficha){
 
 }
 
+
 /**
  * Elimina un Node de List.
  * @param data
  */
-void List::deleteNode(Ficha* ficha){
+void List::deleteNode(Ficha* _ficha){
     NodeFicha* delNode = nullptr;
     NodeFicha* temp = head;
     NodeFicha* aux = head;
-    while (aux != nullptr && aux->getFicha() != ficha) {
+    while (aux != nullptr && aux->getFicha() != _ficha) {
         temp = aux;
         aux = aux->getNext();
     }
     if (aux == nullptr) {
-        cout << ficha << " no esta en la lista\n" << endl;
+        cout << _ficha << " no esta en la lista\n" << endl;
     } else {
         delNode = aux;
         if (head == delNode) {
@@ -103,23 +105,20 @@ void List::deleteNode(Ficha* ficha){
 
     len-=1;
 
-    //cout << "\n" << endl;
-    //printList();
-
 }
 
 
 /**
- * Retorna un Node por su index
- * @param
- * @return
+ * Retorna un Node por su index.
+ * @param posicion
+ * @return Node
  */
-NodeFicha* List::getNode(int index){
+NodeFicha* List::getNode(int _index){
     NodeFicha* temp = nullptr;
-    if (index <= len) {
+    if (_index <= len) {
         int i = 1;
         temp = head;
-        while (i != index) {
+        while (i != _index) {
             temp = temp->getNext();
             i++;
         }
@@ -127,21 +126,23 @@ NodeFicha* List::getNode(int index){
     return temp;
 }
 
+
 /**
- * Retorna un node por su letra
+ * Retorna un node por su letra.
  * @param letra
- * @return
+ * @return Node
  */
-NodeFicha* List::getNode(string letra) {
+NodeFicha* List::getNode(string _letra) {
     NodeFicha* temp = head;
     while (temp != nullptr) {
-        if (temp->getFicha()->getLetra() == letra) {
+        if (temp->getFicha()->getLetra() == _letra) {
             return temp;
         }
         temp = temp->getNext();
     }
     return nullptr;
 }
+
 
 /**
  * Imprime los nodos en List.

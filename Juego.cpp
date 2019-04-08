@@ -5,6 +5,7 @@
 #include "Juego.h"
 #include "Cuadricula.h"
 
+
 /**
  * Representa al Juego.
  *
@@ -35,15 +36,15 @@ Juego::Juego(int _cantJugadoresPermitidos){
 }
 
 /**
- *
- * @return
+ * Getter del codigo
+ * @return codigo
  */
 string Juego::getCodigo() {
     return codigo;
 }
 
 /**
- *
+ * Setter del codigo
  * @param _codigo
  */
 void Juego::setCodigo(string _codigo) {
@@ -83,7 +84,7 @@ void Juego::setJ1(Jugador* _j1) {
 }
 
 /**
- * Setter del Jugador #2
+ * Getter del Jugador #2
  * @return j2
  */
 Jugador* Juego::getJ2() {
@@ -91,7 +92,7 @@ Jugador* Juego::getJ2() {
 }
 
 /**
- *
+ * Setter del Jugador #2
  * @param _j2
  */
 void Juego::setJ2(Jugador* _j2) {
@@ -99,7 +100,7 @@ void Juego::setJ2(Jugador* _j2) {
 }
 
 /**
- *
+ * Getter del Jugador #3
  * @return
  */
 Jugador* Juego::getJ3() {
@@ -107,7 +108,7 @@ Jugador* Juego::getJ3() {
 }
 
 /**
- *
+ * Setter del Jugador #3
  * @param _j3
  */
 void Juego::setJ3(Jugador* _j3) {
@@ -115,7 +116,7 @@ void Juego::setJ3(Jugador* _j3) {
 }
 
 /**
- *
+ * Getter del Jugador #4
  * @return
  */
 Jugador* Juego::getJ4() {
@@ -123,7 +124,7 @@ Jugador* Juego::getJ4() {
 }
 
 /**
- *
+ * Setter del Jugador #4
  * @param _j4
  */
 void Juego::setJ4(Jugador* _j4) {
@@ -131,15 +132,15 @@ void Juego::setJ4(Jugador* _j4) {
 }
 
 /**
- *
- * @return
+ * Getter de la cantidad de jugadores actuales
+ * @return cantidad
  */
 int Juego::getCantJugadoresActuales() {
     return cantJugadoresActuales;
 }
 
 /**
- *
+ * Setter de la cantidad de jugadores actuales
  * @param _cantJugadoresActuales
  */
 void Juego::setCantJugadoresActuales(int _cantJugadoresActuales) {
@@ -147,15 +148,15 @@ void Juego::setCantJugadoresActuales(int _cantJugadoresActuales) {
 }
 
 /**
- *
- * @return
+ * Getter de la cantidad de jugadores permitidos
+ * @return cantidad
  */
 int Juego::getCantJugadoresPermitidos() {
     return cantJugadoresPermitidos;
 }
 
 /**
- *
+ * Setter de la cantidad de jugadores permitidos
  * @param _cantJugadoresPermitidos
  */
 void Juego::setCantJugadoresPermitidos(int _cantJugadoresPermitidos) {
@@ -163,15 +164,15 @@ void Juego::setCantJugadoresPermitidos(int _cantJugadoresPermitidos) {
 }
 
 /**
- *
- * @return
+ * Getter de la cuadricula
+ * @return cuadricula
  */
 Cuadricula* Juego::getCuadricula() {
     return cuadricula;
 }
 
 /**
- *
+ * Setter de la cuadricula
  * @param _cuadricula
  */
 void Juego::setCuadricula(Cuadricula* _cuadricula) {
@@ -179,15 +180,15 @@ void Juego::setCuadricula(Cuadricula* _cuadricula) {
 }
 
 /**
- *
- * @return
+ * Getter del pool de Fichas
+ * @return List
  */
 List* Juego::getPoolFichas() {
     return poolFichas;
 }
 
 /**
- *
+ * Setter del pool de fichas
  * @param _poolFichas
  */
 void Juego::setPoolFichas(List* _poolFichas) {
@@ -195,15 +196,15 @@ void Juego::setPoolFichas(List* _poolFichas) {
 }
 
 /**
- *
- * @return
+ * Getter de la cantidad de fichas
+ * @return cantidad
  */
 int Juego::getCantFichas() {
     return cantFichas;
 }
 
 /**
- *
+ * Getter de la cantidad de fichas
  * @param _cantFichas
  */
 void Juego::setCantFichas(int _cantFichas) {
@@ -211,15 +212,15 @@ void Juego::setCantFichas(int _cantFichas) {
 }
 
 /**
- *
- * @return
+ * Retorna si está terminado
+ * @return bool
  */
 bool Juego::isTerminado() {
     return terminado;
 }
 
 /**
- *
+ * Setter del terminado
  * @param _terminado
  */
 void Juego::setTerminado(bool _terminado) {
@@ -227,7 +228,7 @@ void Juego::setTerminado(bool _terminado) {
 }
 
 /**
- *
+ * Retorna si ha sido iniciado
  * @return
  */
 bool Juego::isIniciado(){
@@ -235,7 +236,7 @@ bool Juego::isIniciado(){
 }
 
 /**
- *
+ * Setter del iniciado
  * @param _iniciado
  */
 void Juego::setIniciado(bool _iniciado) {
@@ -243,14 +244,15 @@ void Juego::setIniciado(bool _iniciado) {
 }
 
 /**
- *
+ * Getter del jugador en turno
+ * @return Jugador
  */
 Jugador* Juego::getEnTurno() {
     return enTurno;
 }
 
 /**
- *
+ * Setter del jugador en turno
  * @param enTurno
  */
 void Juego::setEnTurno(Jugador *enTurno) {
@@ -258,15 +260,15 @@ void Juego::setEnTurno(Jugador *enTurno) {
 }
 
 /**
- *
- * @return
+ * Getter del jugador ganador
+ * @return Jugador
  */
 Jugador* Juego::getGanador() {
     return ganador;
 }
 
 /**
- *
+ * Setter del jugador ganador
  * @param _ganador
  */
 void Juego::setGanador(Jugador* _ganador) {
@@ -274,11 +276,11 @@ void Juego::setGanador(Jugador* _ganador) {
 }
 
 
-//Funciones
+///Funciones
 
 
 /**
- * Genera el codigo con caracteres aleatorios
+ * Genera el codigo con caracteres aleatorios.
  */
 void Juego::generarCodigo(){
 
@@ -309,6 +311,7 @@ void Juego::generarCodigo(){
 /**
  * Añade un jugador y verifica si hay campo en el juego.
  * @param nombre - nombre del jugador por agregar
+ * @return bool - si se añadió
  */
 bool Juego::addJugador(string nombre) {
 
@@ -355,7 +358,7 @@ bool Juego::addJugador(string nombre) {
 
 /**
  * Verifica si están todos los jugadores completos.
- * @return
+ * @return bool
  */
 bool Juego::checkJugadoresCompletos() {
     if (cantJugadoresActuales == cantJugadoresPermitidos) {
@@ -554,7 +557,7 @@ void Juego::checkTurnosPasados(){
 }
 
 /**
- *
+ * Verifica si el juego ha terminado para decidir el ganador
  */
 void Juego::checkTerminado() {
     if (terminado == true) {

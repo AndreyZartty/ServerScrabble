@@ -9,55 +9,99 @@
  * @since 26/03/19.
  */
 
+/**
+ * Constructor de la Cuadricula
+ */
 Cuadricula::Cuadricula(){
     buildMatriz();
     tamano = 0;
-
     cantOcupadas = 0;
     cantEspeciales = 0;
-
 }
 
+/**
+ * Getter del tamaño de la cuadricula
+ * @return tamaño
+ */
 int Cuadricula::getTamano(){
     return tamano;
 }
-CNode* Cuadricula::getCasillasOcupadas(int casilla){
-    return casillasOcupadas[casilla];
-}
-CNode* Cuadricula::getCasillasEspeciales(int casilla){
-    return casillasEspeciales[casilla];
-}
-void Cuadricula::setMatriz(int tam){
-    matriz[tam][tam];
-}
-void Cuadricula::setTamano(int tam){
-    tamano = tam;
+
+/**
+ * Setter del tamaño de la cuadricula
+ * @param tamaño
+ */
+void Cuadricula::setTamano(int _tamano){
+    tamano = _tamano;
     setMatriz(getTamano());
 }
-void Cuadricula::setCasillaEsp(CNode* especial){
-    casillasEspeciales[cantEspeciales] = especial;
-    cantEspeciales++;
+
+/**
+ * Getter de casilla ocupada
+ * @param casilla
+ * @return
+ */
+CNode* Cuadricula::getCasillaOcupada(int _casilla){
+    return casillasOcupadas[_casilla];
 }
-void Cuadricula::addCasillaOcu(CNode* ocupada) {
-    casillasOcupadas[cantOcupadas] = ocupada;
+
+/**
+ * Setter de casilla ocupada
+ * @param ocupada
+ */
+void Cuadricula::setCasillaOcupada(CNode* _ocupada) {
+    casillasOcupadas[cantOcupadas] = _ocupada;
     cantOcupadas++;
 }
 
+/**
+ * Getter de casilla especial
+ * @param casilla
+ * @return
+ */
+CNode* Cuadricula::getCasillaEspecial(int _casilla){
+    return casillasEspeciales[_casilla];
+}
+
+/**
+ * Setter de casilla especial
+ * @param especial
+ */
+void Cuadricula::setCasillaEspecial(CNode* _especial){
+    casillasEspeciales[cantEspeciales] = _especial;
+    cantEspeciales++;
+}
+
+/**
+ * Setter del tamaño de la matriz
+ * @param _tamano
+ */
+void Cuadricula::setMatriz(int _tamano){
+    matriz[_tamano][_tamano];
+}
+
+
+/**
+ * Ingresa la fila en la matriz
+ * @param fila - donde se colocara
+ * @param columna - donde se colocara
+ * @param ficha
+ */
 void  Cuadricula::addFicha(int fila, int columna, Ficha* ficha) {
     matriz[fila][columna]->setFicha(ficha);
 }
 
+/**
+ * Construye la matriz 15x15 con CNodes preestablecidos
+ */
 void Cuadricula::buildMatriz() {
 
-    int i = 15;
-    int j = 15;
-    for (i;i>0;i--) {
-        for (j;j>0;j--) {
+    for (int i = 0 ; i < 15 ; i++) {
+        for (int j = 0 ; j < 15 ; j++) {
             CNode* nCNode = new CNode();
             matriz[i][j] = nCNode;
-            //cout << "["<< i << "," << j <<"]" << endl;
+            cout << "["<< i << "," << j <<"]" << endl;
         }
-        j=15;
     }
-    cout << "Matriz cuadricula lista" << endl;
+    cout << "Matriz de cuadricula lista" << endl;
 }

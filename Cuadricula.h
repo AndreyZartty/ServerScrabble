@@ -24,15 +24,13 @@ public:
     Cuadricula();
 
     int getTamano();
-    void setTamano(int tam);
+    void setTamano(int _tamano);
+    CNode* getCasillaOcupada(int _casilla);
+    void setCasillaEspecial(CNode* _especial);
+    CNode* getCasillaEspecial(int _casilla);
+    void setCasillaOcupada(CNode* _ocupada);
 
-    CNode* getCasillasOcupadas(int casilla);
-
-    CNode* getCasillasEspeciales(int casilla);
-    void setMatriz(int tam);
-
-    void setCasillaEsp(CNode* especial);
-    void addCasillaOcu(CNode* ocupada);
+    void setMatriz(int _tamano);
 
     void addFicha(int fila, int columna, Ficha* ficha);
 

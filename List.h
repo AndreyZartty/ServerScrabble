@@ -15,9 +15,7 @@
 class List {
 
 private:
-    ///Primer node de List
     NodeFicha* head;
-    ///Cantidad de nodos en List
     int len;
 
 public:
@@ -26,13 +24,13 @@ public:
     void setHead(NodeFicha* _head);
     int getLen();
     void setLen(int _len);
-    void newNode(Ficha* ficha);
-    void deleteNode(Ficha* ficha);
-    NodeFicha* getNode(int index);
-    NodeFicha* getNode(string letra);
+    void newNode(Ficha* _ficha);
+    void deleteNode(Ficha* _ficha);
+    NodeFicha* getNode(int _index);
+    NodeFicha* getNode(string _letra);
     void printList();
 
-
 };
+
 
 #endif //CODE_LIST_H

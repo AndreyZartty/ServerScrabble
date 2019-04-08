@@ -34,6 +34,7 @@ private:
     Jugador* ganador;
 
 public:
+    //Constructor
     Juego(int _cantJugadoresPermitidos);
 
     //Getters & Setters
@@ -65,7 +66,6 @@ public:
     void setTerminado(bool _terminado);
     bool isIniciado();
     void setIniciado(bool _iniciado);
-
     Jugador* getGanador();
     void setGanador(Jugador *ganador);
 
@@ -79,7 +79,6 @@ public:
     void checkTurnosPasados();
     void checkTerminado();
     void siguienteTurno();
-
 
 };
 
