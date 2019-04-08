@@ -589,7 +589,7 @@ void lectura(string nombre, string dcc[]) {
  * @param nueva
  * @return
  */
-string comprobarPalabra(string nueva) {
+string verificarPalabraAux(string nueva) {
     int aDcc = 186594;
     string diccionario[190000] = {};
     lectura("ServerScrabble/diccio.txt", diccionario);
@@ -611,31 +611,24 @@ string comprobarPalabra(string nueva) {
 
 
 
-/**
- * Boton Scrabble!
- * @param codigo - para saber en que juego pasar el turno
- */
-string scrabble(string codigo, string palabra) {
+
+string verificarPalabra(string codigo, string palabra) {
 
     int numJuego = getJuego(codigo);
 
     if (numJuego >= 0) {
 
-        cout << "\nCall a Scrabble!" << endl;
 
+        json_object *jobjPalabra = json_object_new_object();
 
-        comprobarPalabra(palabra);
+        ///Manda a verificar la palabra
+        string strPalabra = verificarPalabraAux(palabra);
 
+        json_object *json_Palabra = json_object_new_string(strPalabra.c_str());
 
-        json_object *jobjScrabble = json_object_new_object();
+        json_object_object_add(jobjPalabra, "PALABRA", json_Palabra);
 
-        string strScrabble = "DEFINIR QUE SE ENVIA EN SCRABBLE!";
-
-        json_object *json_Scrabble = json_object_new_string(strScrabble.c_str());
-
-        json_object_object_add(jobjScrabble, "SCRABBLE", json_Scrabble);
-
-        return json_object_to_json_string(jobjScrabble);
+        return json_object_to_json_string(jobjPalabra);
 
 
     }
@@ -657,8 +650,22 @@ string scrabble(string codigo, string palabra) {
 
 }
 
+/**
+ * Boton Scrabble!
+ * @param codigo - para saber en que juego pasar el turno
+ */
+string scrabble(string codigo){
+    int numJuego = getJuego(codigo);
 
+    if (numJuego >= 0) {
 
+        cout << "\nCall a Scrabble!" << endl;
+    }
+    ///Cuando no hay juegos definidos
+    else {
+
+    }
+}
 
 
 /**
@@ -790,6 +797,116 @@ int main(int argc, char **argv) {
             json_object_object_get_ex(parsed_jsonTurno, "TURNO", &tempTurno);
             printf("Turno: %s\n", json_object_get_string(tempTurno));
 
+            ///KEY: PALABRA
+            ///Obtiene un request para verificar la palabra
+            struct json_object *tempPalabra;
+            json_object *parsed_jsonPalabra = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonPalabra, "PALABRA", &tempPalabra);
+            printf("Palabra: %s\n", json_object_get_string(tempPalabra));
+
+            ///LETRA FICHAS
+
+            ///KEY: F1L
+            ///Obtiene la Letra de la Ficha 1
+            struct json_object *tempF1L;
+            json_object *parsed_jsonF1L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF1L, "F1L", &tempF1L);
+            printf("F1L: %s\n", json_object_get_string(tempF1L));
+
+            ///KEY: F2L
+            ///Obtiene la Letra de la Ficha 2
+            struct json_object *tempF2L;
+            json_object *parsed_jsonF2L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF2L, "F2L", &tempF2L);
+            printf("F2L: %s\n", json_object_get_string(tempF2L));
+
+            ///KEY: F3L
+            ///Obtiene la Letra de la Ficha 3
+            struct json_object *tempF3L;
+            json_object *parsed_jsonF3L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF3L, "F3L", &tempF3L);
+            printf("F3L: %s\n", json_object_get_string(tempF3L));
+
+            ///KEY: F4L
+            ///Obtiene la Letra de la Ficha 4
+            struct json_object *tempF4L;
+            json_object *parsed_jsonF4L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF4L, "F4L", &tempF4L);
+            printf("F4L: %s\n", json_object_get_string(tempF4L));
+
+            ///KEY: F5L
+            ///Obtiene la Letra de la Ficha 5
+            struct json_object *tempF5L;
+            json_object *parsed_jsonF5L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF5L, "F5L", &tempF5L);
+            printf("F5L: %s\n", json_object_get_string(tempF5L));
+
+            ///KEY: F6L
+            ///Obtiene la Letra de la Ficha 6
+            struct json_object *tempF6L;
+            json_object *parsed_jsonF6L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF6L, "F6L", &tempF6L);
+            printf("F6L: %s\n", json_object_get_string(tempF6L));
+
+            ///KEY: F7L
+            ///Obtiene la Letra de la Ficha 7
+            struct json_object *tempF7L;
+            json_object *parsed_jsonF7L = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF7L, "F7L", &tempF7L);
+            printf("F7L: %s\n", json_object_get_string(tempF7L));
+
+            ///POSICION FICHAS
+
+            ///KEY: F1P
+            ///Obtiene la Posicion de la Ficha 1
+            struct json_object *tempF1P;
+            json_object *parsed_jsonF1P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF1P, "F1P", &tempF1P);
+            printf("F1P: %s\n", json_object_get_string(tempF1P));
+
+            ///KEY: F2P
+            ///Obtiene la Posicion de la Ficha 2
+            struct json_object *tempF2P;
+            json_object *parsed_jsonF2P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF2P, "F2P", &tempF2P);
+            printf("F2P: %s\n", json_object_get_string(tempF2P));
+
+            ///KEY: F3P
+            ///Obtiene la Posicion de la Ficha 3
+            struct json_object *tempF3P;
+            json_object *parsed_jsonF3P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF3P, "F3P", &tempF3P);
+            printf("F3P: %s\n", json_object_get_string(tempF3P));
+
+            ///KEY: F4P
+            ///Obtiene la Posicion de la Ficha 4
+            struct json_object *tempF4P;
+            json_object *parsed_jsonF4P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF4P, "F4P", &tempF4P);
+            printf("F4P: %s\n", json_object_get_string(tempF4P));
+
+            ///KEY: F5P
+            ///Obtiene la Posicion de la Ficha 5
+            struct json_object *tempF5P;
+            json_object *parsed_jsonF5P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF5P, "F5P", &tempF5P);
+            printf("F5P: %s\n", json_object_get_string(tempF5P));
+
+            ///KEY: F6P
+            ///Obtiene la Posicion de la Ficha 6
+            struct json_object *tempF6P;
+            json_object *parsed_jsonF6P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF6P, "F6P", &tempF6P);
+            printf("F6P: %s\n", json_object_get_string(tempF6P));
+
+            ///KEY: F7P
+            ///Obtiene la Posicion de la Ficha 7
+            struct json_object *tempF7P;
+            json_object *parsed_jsonF7P = json_tokener_parse(buff);
+            json_object_object_get_ex(parsed_jsonF7P, "F7P", &tempF7P);
+            printf("F7P: %s\n", json_object_get_string(tempF7P));
+
+
             ///JSON Verificaciones
 
             ///Creacion del juego
@@ -846,7 +963,19 @@ int main(int argc, char **argv) {
                 string enTurno = sendEnTurno(json_object_get_string(tempCodigo));
 
                 send(fd2, enTurno.c_str(), MAXDATASIZE, 0);
+
             }
+
+            ///Obtendra un request para comprobar la palabra y sumar puntos
+            ///Verifica que reciba los KEYS: PALABRA Y CODIGO
+            if (json_object_get_string(tempCodigo) != 0 && json_object_get_string(tempPalabra) != 0) {
+
+                string resultPalabra = verificarPalabra(json_object_get_string(tempCodigo), json_object_get_string(tempPalabra));
+
+                send(fd2, resultPalabra.c_str(), MAXDATASIZE, 0);
+            }
+
+            
 
 
             ///Reestablece el buffer
